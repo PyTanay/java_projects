@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 public class MazeSolver {
 	public static void main(String[] args) throws FileNotFoundException {
 		ArrayList<Maze> mazes=new ArrayList<Maze>();
-		readMaze(mazes);
+		readMaze(mazes,0); //second argument is just to tell the pointer from where to start
 		int i=0;
 		while(i<mazes.size()) {
 			if(solveMaze(mazes.get(i))) {
@@ -23,19 +23,30 @@ public class MazeSolver {
 		}
 	}
 		
-	private static void readMaze(ArrayList<Maze> mazes) throws FileNotFoundException {
+	private static void readMaze(ArrayList<Maze> mazes,int a) throws FileNotFoundException {
 		Scanner in=new Scanner(new File("mazes.txt"));
 		Maze m=new Maze();
-		String tempstr=in.nextLine();
+		String tempstr;
+		for(int i=0;i<a;i++) {
+			if(in.hasNextLine()) {
+				tempstr=in.nextLine();
+			}else {
+				return;
+			}
+		}
+		tempstr=in.nextLine();
+		a++;
 		ArrayList<ArrayList<Integer>> maze1=new ArrayList<ArrayList<Integer>>();
 		while(tempstr.length()>1) {
 			int[] numarr=Arrays.stream(tempstr.split(",")).mapToInt(x->Integer.parseInt(x)).toArray();
 			ArrayList<Integer> numlist = IntStream.of(numarr).boxed().collect(Collectors.toCollection(ArrayList::new));
 			maze1.add(numlist);
 			tempstr=in.nextLine();
+			a++;
 		}
 		int x=Integer.parseInt(tempstr);
 		tempstr=in.nextLine();
+		a+=2;
 		int y=Integer.parseInt(tempstr);
 		m.start=new Position(x,y);
 		m.maze=maze1;
@@ -46,6 +57,8 @@ public class MazeSolver {
             }
             System.out.println();
 		}
+		System.out.println(a);
+		readMaze(mazes,a);
 	}
 
 	private static boolean solveMaze(Maze m) {
