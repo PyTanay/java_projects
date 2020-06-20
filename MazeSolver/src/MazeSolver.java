@@ -46,7 +46,7 @@ public class MazeSolver {
 		}
 		int x=Integer.parseInt(tempstr);
 		tempstr=in.nextLine();
-		a+=2;
+		a+=2; //to skip though the separating line-break in the text file
 		int y=Integer.parseInt(tempstr);
 		m.start=new Position(x,y);
 		m.maze=maze1;
@@ -57,7 +57,6 @@ public class MazeSolver {
             }
             System.out.println();
 		}
-		System.out.println(a);
 		readMaze(mazes,a);
 	}
 
